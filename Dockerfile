@@ -5,9 +5,10 @@ COPY pom.xml .
 COPY src ./src
 RUN mvn clean install -DskipTests
 
-# Stage 2: Run the application
-FROM eclipse-temurin:11-jre-alpine
+# Stage 2: Create a minimal runtime image
+FROM gcr.io/distroless/java11-debian11
 WORKDIR /app
 COPY --from=build /app/target/cart-0.0.1-SNAPSHOT.jar /app/cart-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
-CMD ["java", "-jar", "cart-0.0.1-SNAPSHOT.jar"]
+CMD ["cart-0.0.1-SNAPSHOT.jar"]
+
